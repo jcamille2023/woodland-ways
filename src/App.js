@@ -1,10 +1,35 @@
 import logo from './logo.svg';
 import './App.css';
-import {useEffect, useRef, forwardRef} from 'react'  ;
+import {useEffect, useRef, forwardRef, useState} from 'react'  ;
+import { initializeApp } from 'firebase/app';
+import { getFirestore,ref as FirestoreRef } from 'firebase/firestore';
+import { getStorage, ref as StorageRef, getDownloadURL} from 'firebase/storage';
 
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyDyTsLzol1L2O7okUUZqR0Dteytdnx4aR8",
+
+  authDomain: "woodland-ways.firebaseapp.com",
+
+  projectId: "woodland-ways",
+
+  storageBucket: "woodland-ways.appspot.com",
+
+  messagingSenderId: "379451321788",
+
+  appId: "1:379451321788:web:28179dd6cffd1219304fb9",
+
+  measurementId: "G-D0M39ETSQ7"
+
+};
+
+const app = initializeApp(firebaseConfig);
+//const analytics = getAnalytics(app);
+const storage = getStorage(app);
 
 const Header = forwardRef((props, ref) => {
-  
+  // add firebase firestore links here
   let links = [{"home":'/',"key":0},{"activities":'/activities',"key":1},{"submit":'/submit',"key":2},{"contact us":'/contact',"key":3}];
   links = links.map((link) => {
     return (
@@ -27,16 +52,31 @@ const Footer = forwardRef((props, ref) => {
   )
 });
 
+async function setImage(setSrc,reference) {
+  let link = await getDownloadURL(reference);
+  setSrc(link);
+  console.log(link);
+}
 const Banner = forwardRef((props, ref) =>{
-  let logo = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";
+  const imgRef = StorageRef(storage,"public/img/banner.png");
+  const [src, setSrc] = useState();
+  setImage(setSrc, imgRef);
   return (
-    <div ref={ref}className="banner">
-      <img style={{width: "100vw",height: "100vh", }}src={logo}></img>
+    <div style={{scale: 3 }} ref={ref} className="banner">
+      <img src={src}></img>
     </div>
   )
 
 });
 
+function AboutUs() {
+  return (
+    <>
+      <h1>What is Woodland Ways?</h1>
+      <p></p>
+    </>
+  )
+}
       
 
 function App() {
@@ -48,7 +88,7 @@ function App() {
       if (window.scrollY > bannerRef.current.clientHeight) {
         headerRef.current.style.backgroundColor = "white";
       } else {
-        headerRef.current.style.position = "relative";
+        //headerRef.current.style.position = "relative";
       }
     });
   })
@@ -57,6 +97,7 @@ function App() {
     <>
       <Header ref={headerRef}/>
       <Banner ref={bannerRef}/>
+      <AboutUs />
       <Footer />
       </>
   );

@@ -42,11 +42,11 @@ a {
   padding: 5px;
 }
 
-#navbar {
-  position: sticky;
+#navbar, .navbar {
+  height: 0px;
+  position: fixed;
   top: 0;
   right: 0vw;
-  padding-top: 20px;
   /* background: #cfbac9; */
   width: 100%;
   text-align: right;
@@ -62,18 +62,20 @@ p, button, a {
   font-family: 'Raleway';
 }
 
-div.navbar > a:hover, table > tbody > tr > a:hover{
-  background-color:white;
-  color:#000000;
-}
 
 body {
-  background-color: #d2b4bc;
+  background-color: #3d5221;
   margin: 0;
 }
 .banner {
   width: 100%;
-  background-color: #d2b4bc;
   overflow: hidden;
 
+}
+
+.banner > img {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  object-fit: cover;
 }
