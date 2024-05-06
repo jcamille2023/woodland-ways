@@ -71,16 +71,19 @@ function AboutUs()
 { // section of page that has opportunities
   let [opportunities, setOpportunities] = useState([]);
   let [errorState, setErrorState] = useState(false);
+  let [overlay, setOverlay] = useState();
   let list = [];
-  getDocs(collection(db,"/public/public", "featured_opportunities")).then((docs) => {
-    docs.forEach((doc) => {
-      list.push(doc.data()); // gets all featured opportunities and places them in an array
+  useEffect(() => {
+    getDocs(collection(db,"/public/public", "featured_opportunities")).then((docs) => {
+      docs.forEach((doc) => {
+        list.push(doc.data()); // gets all featured opportunities and places them in an array
+      });
+      setOpportunities(list); // sets the opportunities variable to contain the list of opportunities
+    } ).catch((err) => {
+      console.log(err);
+      setErrorState(true);
     });
-    setOpportunities(list); // sets the opportunities variable to contain the list of opportunities
-  } ).catch((err) => {
-    console.log(err);
-    setErrorState(true);
-  });
+});
   return (
     <>
       <div style={{backgroundColor: "#ffffff", marginLeft: "7.5%", marginRight: "7.5%", marginTop: "3.5%", marginBottom: "3.5%",borderRadius: "15px", textAlign: "center", padding: "50px"}}>
@@ -96,21 +99,21 @@ function AboutUs()
         <div style={{padding: "20px"}}>
           <h1>Featured Opportunities</h1>
           <div style={{display: "grid", gap: "25px 50px", gridTemplateColumns: "auto auto auto", margin: "25px"}}>
-            {opportunities.map((opportunity) => { // maps the opportunities to the page
-              errorState ? (<div><h1>There has been an error.</h1></div>) : (
-                <div className="opportunity" style={{backgroundColor: "black",color: "white", borderRadius: "20px", transitionDuration: "0.5s"}} key={opportunity.key}>
+            {errorState ? (<div><h1>There has been an error.</h1></div>) : opportunities.map((opportunity) => ( // maps the opportunities to the page
+
+                <div className="opportunity" style={{backgroundColor: "black",color: "white", borderRadius: "20px", transitionDuration: "0.5s"}} key={opportunity.key} onClick={() => {setOverlay(ShowActivity(opportunity,setOverlay))}}>
                   <div  style={{padding: "10px"}}>
                   <img src={opportunity.imgSrc}></img>
                   <h1>{opportunity.title}</h1>
                   <p>{opportunity.description}</p>
                   </div>
                 </div>
-              );
-            })}
+
+            ))};
 
           </div>
+          {overlay}
             <a className="button" style={{fontFamily: "century-gothic", margin: "10px"}}href="/activities">View All Opportunities</a>
-
         </div>
       </div>
     </>
@@ -150,24 +153,27 @@ function ShowActivity(activity, setOverlay)
 {
   return (
     <div className="overlay"style={{width: "100vh", height: "100vh", position: "absolute", top: '0', padding: '5% 5% 0% 0%'}}>
-      <div className="close" style={{position: "absolute", top: "0", right: "0", padding: "10px", cursor: "pointer"}} onClick={() => {setOverlay()}}>X</div>
-      <h1>{activity.title}</h1>
-      <p>{activity.description}</p>
-      <div className="attributes">
-        <div>
-          <h2>Location</h2>
-          <p>{activity.location}</p>
+      <div className="close" style={{position: "absolute", top: "0", right: "0", padding: "25px", cursor: "pointer"}} onClick={() => {setOverlay()}}>X</div>
+      <div style={{padding: '25px'}}>
+        <h1>{activity.title}</h1>
+        <h2>{activity.institution}</h2>
+        <p>{activity.description}</p>
+        <div className="attributes">
+          <div>
+            <h2>Location</h2>
+            <p>{activity.location}</p>
+          </div>
+          <div>
+            <h2>Deadline</h2>
+            <p>{activity.deadline}</p>
+          </div>
+          <div>
+            <h2>Duration</h2>
+            <p>{activity.duration}</p>
+          </div>
         </div>
-        <div>
-          <h2>Date</h2>
-          <p>{activity.date}</p>
-        </div>
-        <div>
-          <h2>Duration</h2>
-          <p>{activity.duration}</p>
-        </div>
+        <a href={activity.link}>Learn more</a>
       </div>
-      <a>Apply now</a>
     </div>
   );
 }
@@ -183,7 +189,7 @@ function Activities()
     const fetchActivities = async () => {
       try {
         if (search === '') {
-          const q = collection(db, "/public/public", "featured_opportunities");
+          const q = collection(db, "/public/public", "opportunities");
           const querySnapshot = await getDocs(q);
           let list = [];
           querySnapshot.forEach((doc) => {
@@ -221,10 +227,11 @@ function Activities()
             console.log(opportunity)
             return (
               <div className="opportunities" style={{backgroundColor: "white",color: "black", borderRadius: "20px", transitionDuration: "0.5s"}} key={opportunity.key} onClick={() => {setOverlay(ShowActivity(opportunity,setOverlay))}}>
+                <p>Click on an opportunity to learn more!</p>
                   <div className="activity" style={{padding: "10px"}} >
-                  <img src={opportunity.imgSrc}></img>
                   <h1>{opportunity.title}</h1>
-                  <p>{opportunity.description}</p>
+                  <h2>{opportunity.institution}</h2>
+                  <p>Deadline: {opportunity.deadline}</p>
                   </div>
                 </div>
             );
@@ -246,7 +253,7 @@ function Activities()
             </div>
           </div>
           {loaded ? <Loading /> : items}
-          
+  
         </div>
       </div>
       {overlay}
