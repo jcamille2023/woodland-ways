@@ -290,7 +290,7 @@ function Submit() {
     if(user) {
       return (
         <>
-  <AdminHeader>{user}</AdminHeader>
+  <AdminHeader user={user}></AdminHeader>
   <Banner />
   <div style={{textAlign: "center"}}>
     <h1>Submit an Opportunity</h1>
@@ -312,26 +312,15 @@ function Submit() {
     }
 }
   
-function AdminHome(user) {
-  return (
-    <>
-    <AdminHeader>{user}</AdminHeader>
-    <Banner />
-    <div style={{textAlign: "center"}}>
-      <h1>Admin Dashboard</h1>
-      <a href="/submit">Submit an Opportunity</a>
-    </div>
-    </>
-  );
 
-}
 function Admin() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
     if(user) {
-      return (<AdminHome>{user}</AdminHome>);
+      return (<AdminHome user={user}></AdminHome>);
+      
     }
     else {
       return (<AdminLogin />);
@@ -375,7 +364,7 @@ function AdminLogin() {
   );
 }
 
-function AdminHeader(user) {
+function AdminHeader({user}) {
   let links = [{"home":'/',"key":0},{"settings":'/admin/settings',"key":1},{"sign out":'javascript:logout()',"key":2}];
   links = links.map((link) => {
     return (
@@ -384,15 +373,31 @@ function AdminHeader(user) {
   }); 
 
   return (
-    <div className="navbar" id="navbar" style={{width: "100%", position:"sticky"}}>
+    <div className="admin_navbar" id="admin_navbar" style={{width: "100%"}}>
       <div style={{padding: "35px"}}>
-        <p>{user.children.displayName}</p>
+        <p>{user.displayName}</p>
         {links}
       </div>
     </div>
   )
 }
 
+function AdminHome({user}) {
+  console.log(user)
+  return (
+    <>
+    <AdminHeader user={user}></AdminHeader>
+    <div style={{backgroundColor: "white",color: "black", borderRadius: "20px", transitionDuration: "0.5s"}}>
+      <div style={{margin: "20px"}}>
+        <h1>Hi, {user.displayName}!</h1>
+        <h2>Manage Woodland Ways</h2>
+        <a href="/submit">Submit an Opportunity</a>
+      </div>
+    </div>
+    </>
+  );
+
+}
 
 function login() {
   signInWithPopup(auth,provider)

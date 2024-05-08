@@ -19,6 +19,15 @@ a {
   text-align: right;
   
 }
+
+#admin_navbar, .admin_navbar {
+  height: 0px;
+  /* background: #cfbac9; */
+  width: 100%;
+  background-color: orange;
+  text-align: right;
+  
+}
 #navbar > div {
   transition-property: background-color;
   transition-duration: 0.3s;
