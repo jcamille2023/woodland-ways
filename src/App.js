@@ -62,7 +62,7 @@ const Banner = forwardRef((props, ref) =>{ //banner requires a forwardref to mat
   setImage(setSrc, imgRef);
   return (
     <div style={{scale: 3 }} ref={ref} className="banner">
-      <img src={src}></img>
+      <img src={src} alt="woodland ways banner"></img>
     </div>
   )
 
@@ -379,7 +379,7 @@ function AdminLogin() {
 }
 
 function AdminHeader({user}) {
-  let links = [{"home":'/',"key":0},{"settings":'/admin/settings',"key":1},{"sign out":'javascript:logout()',"key":2}];
+  let links = [{"home":'/',"key":0},{"settings":'/admin/settings',"key":1},{"sign out":'/logout',"key":2}];
   links = links.map((link) => {
     return (
       <a style={{padding: "10px"}}href={link[Object.keys(link)[0]]} key={link.key}>{Object.keys(link)[0]}</a>
