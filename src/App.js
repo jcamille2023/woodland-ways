@@ -292,15 +292,29 @@ function Submit() {
         <>
   <AdminHeader user={user}></AdminHeader>
   <Banner />
-  <div style={{textAlign: "center"}}>
+  <div style={{backgroundColor: "white",color: "black", borderRadius: "20px", transitionDuration: "0.5s", padding: "5px"}}>
     <h1>Submit an Opportunity</h1>
     <form>
+      <h3>Title</h3>
       <input type="text" placeholder="Title" required></input>
-      <input type="text" placeholder="Description" required></input>
+      <h3>Institution/Organization</h3>
+      <input type="text" placeholder="Institution" required></input>
+      <h3>Location</h3>
       <input type="text" placeholder="Location" required></input>
-      <input type="text" placeholder="Date" required></input>
-      <input type="text" placeholder="Duration" required></input>
-      <input type="text" placeholder="Image URL" required></input>
+      <h3>Description</h3>
+      <textarea type="text" placeholder="Description" required></textarea>
+      <h3>Deadline to Apply/Join (01/01/0000 if none)</h3>
+      <input type="date" placeholder="Deadline" required></input>
+      <h3>Duration</h3>
+      <div style={{display: 'grid', gridTemplateColumns: "50% 50%"}}>
+        <h4>From</h4>
+        <input type="date" placeholder="From" required></input>
+        <h4>To</h4>
+        <input type="date" placeholder="To" required></input>
+      </div>
+      <h3>Link to Opportunity Site</h3>
+      <input type="text" placeholder="Link" required></input>
+      
       <button>Submit</button>
     </form>
   </div>
@@ -387,11 +401,15 @@ function AdminHome({user}) {
   return (
     <>
     <AdminHeader user={user}></AdminHeader>
-    <div style={{backgroundColor: "white",color: "black", borderRadius: "20px", transitionDuration: "0.5s"}}>
+    <div style={{backgroundColor: "white",color: "black", borderRadius: "20px", transitionDuration: "0.5s", overflow: 'hidden'}}>
       <div style={{margin: "20px"}}>
         <h1>Hi, {user.displayName}!</h1>
         <h2>Manage Woodland Ways</h2>
-        <a href="/submit">Submit an Opportunity</a>
+        <div style={{display: 'grid', gridTemplateColumns: "33% 33% 33%"}}>
+          <a height="100%" width="100%" className="button" href="/admin/submit">Submit an Opportunity</a>
+          <a height="100%" width="100%" className="button" href="/admin/submit">Add new site sections (coming soon)</a>
+          <a height="100%" width="100%" className="button" href="/admin/submit">Manage stuff</a>
+        </div>
       </div>
     </div>
     </>

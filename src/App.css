@@ -21,10 +21,9 @@ a {
 }
 
 #admin_navbar, .admin_navbar {
-  height: 0px;
   /* background: #cfbac9; */
   width: 100%;
-  background-color: orange;
+  background-color: orange!important;
   text-align: right;
   
 }
@@ -53,18 +52,14 @@ a:link {
 
 .button:link,.button:visited {
   background-color: black;
-  margin: 10px;
-  padding: 5px;
   text-decoration: none;
   text-align: center;
   border-radius: 5px;
   color: white;
-  width: 50px;
-  padding: 20px;
 }
 
 .button:hover, .button:visited:hover {
-  background-color: #cfbac9;
+  background-color: #599429;
   color: black;
 }
 
@@ -283,4 +278,16 @@ opacity: 100%;
 
 .gsi-material-button-contents:hover {
 color: black;
+}
+
+form {
+  display: grid;
+  text-align: center;
+  justify-content: center;
+
+}
+
+form > input, form > textarea {
+  padding: 20px;
+  margin: 20px;
 }
